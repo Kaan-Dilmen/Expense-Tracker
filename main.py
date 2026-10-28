@@ -8,4 +8,4 @@ category = "Food/Drink"
 date = datetime.date.today()
 
 # f-strings let you put variables inside text
-print(f"{date} | £{amount:.2f} | {description} | {category}")
+print(f"{date} | {description} | {category} |  £{amount:.2f} ")
