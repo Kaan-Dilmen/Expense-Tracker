@@ -4,36 +4,43 @@ import datetime
 # Lists
 expenses = []
 
-# Dictionaries
-drink_expense = {
-    "date": str(datetime.date.today()),
-    "category": "Drink",
-    "description": "Coffee",
-    "amount": 3.50,
-}
-expenses.append(drink_expense)
+# Functions
+def add_expense(expenses, category, description, amount):
+    expense = {
+        "date": str(datetime.date.today()),
+        "category": category,
+        "description": description,
+        "amount": amount,
+    }
+    expenses.append(expense)
 
-food_expense = {
-    "date": str(datetime.date.today()),
-    "category": "Food",
-    "description": "Lunch",
-    "amount": 8.50,
-}
-expenses.append(food_expense)
+# Add Expenses
+add_expense(expenses, "Drink", "Coffee", 3.50)
+add_expense(expenses, "Food", "Lunch", 8.50)
+add_expense(expenses, "Travel", "Train Ticket", 15.00)
 
-travel_expense = {
-    "date": str(datetime.date.today()),
-    "category": "Travel",
-    "description": "Train Ticket",
-    "amount": 15.00,
-}
-expenses.append(travel_expense)
+def show_expenses(expenses):
+    for item in expenses:
+        print(f"{item['date']} | {item['description']} | {item['category']} | £{item['amount']:.2f}")
+    
+# Show Expenses
+show_expenses(expenses)
 
-total = 0
+def calculate_total(expenses):
+    total = 0
+    for item in expenses:
+        total += item['amount']
+    return total
 
-# Display Expenses
-for item in expenses:
-    print(f"{item['date']} | {item['description']} | {item['category']} | £{item['amount']:.2f}")
-    total += item['amount']
+def total_by_category(expenses, category):
+    total = 0
+    for item in expenses:
+        if item["category"] == category:
+            total += item['amount']
+    return total
 
-print(f"Total: £{total:.2f}")
+# Return Total
+print(f"Food: £{total_by_category(expenses, 'Food'):.2f}")
+print(f"Drink: £{total_by_category(expenses, 'Drink'):.2f}")
+print(f"Travel: £{total_by_category(expenses, 'Travel'):.2f}")
+print(f"Total: £{calculate_total(expenses):.2f}")
