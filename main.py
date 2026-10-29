@@ -1,5 +1,6 @@
 # Imports
 import datetime
+import csv
 
 # Lists
 expenses = []
@@ -26,6 +27,7 @@ def show_expenses(expenses):
 # Show Expenses
 show_expenses(expenses)
 
+# Total Expenses
 def calculate_total(expenses):
     total = 0
     for item in expenses:
@@ -39,8 +41,19 @@ def total_by_category(expenses, category):
             total += item['amount']
     return total
 
+# Save Expenses
+def save_expenses(expenses, filename):
+    with open(filename, "w", newline="") as file:
+        writer = csv.DictWriter(file, fieldnames=["date", "category", "description", "amount"])
+        writer.writeheader()
+        writer.writerows(expenses)      
+    print("Expenses saved.")  
+
 # Return Total
 print(f"Food: £{total_by_category(expenses, 'Food'):.2f}")
 print(f"Drink: £{total_by_category(expenses, 'Drink'):.2f}")
 print(f"Travel: £{total_by_category(expenses, 'Travel'):.2f}")
 print(f"Total: £{calculate_total(expenses):.2f}")
+
+# Save To File
+save_expenses(expenses, "expenses.csv")
