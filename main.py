@@ -49,6 +49,16 @@ def save_expenses(expenses, filename):
         writer.writerows(expenses)      
     print("Expenses saved.")  
 
+#Load Expenses 
+def load_expenses(filename):
+    expenses = []
+    with open(filename, newline="") as file:
+        reader = csv.DictReader(file)
+        for row in reader:
+            row["amount"] = float(row["amount"])
+            expenses.append(row)
+    return expenses
+
 # Return Total
 print(f"Food: £{total_by_category(expenses, 'Food'):.2f}")
 print(f"Drink: £{total_by_category(expenses, 'Drink'):.2f}")
@@ -57,3 +67,7 @@ print(f"Total: £{calculate_total(expenses):.2f}")
 
 # Save To File
 save_expenses(expenses, "expenses.csv")
+
+# Load From File 
+loaded = load_expenses("expenses.csv")
+show_expenses(loaded)
