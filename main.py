@@ -3,6 +3,10 @@ import csv
 import datetime
 import os
 
+import pandas as pd
+
+import reports
+
 
 # Functions
 # Add Expenses
@@ -15,12 +19,14 @@ def add_expense(expenses, category, description, amount):
     }
     expenses.append(expense)
 
+
 # Show Expenses
 def show_expenses(expenses):
     for item in expenses:
         print(
             f"{item['date']} | {item['description']} | {item['category']} | £{item['amount']:.2f}"
         )
+
 
 # Total Expenses
 def calculate_total(expenses):
@@ -29,12 +35,14 @@ def calculate_total(expenses):
         total += item["amount"]
     return total
 
+
 def total_by_category(expenses, category):
     total = 0
     for item in expenses:
         if item["category"] == category:
             total += item["amount"]
     return total
+
 
 # Save Expenses
 def save_expenses(expenses, filename):
@@ -45,6 +53,7 @@ def save_expenses(expenses, filename):
         writer.writeheader()
         writer.writerows(expenses)
     print("Expenses saved.")
+
 
 # Load Expenses
 def load_expenses(filename):
@@ -59,12 +68,15 @@ def load_expenses(filename):
         print("No file could be found.")
     return expenses
 
+
 # Show Menu
 def show_menu():
     print("1. Add expense")
     print("2. View expenses")
     print("3. View Totals")
     print("4. Quit")
+    print("5. View Reports")
+
 
 # Ask for Amount
 def ask_for_amount():
@@ -78,6 +90,22 @@ def ask_for_amount():
             print("Amount must be more than zero.")
             continue
         return amount
+
+
+# Show Reports
+def show_reports(expenses):
+    if not expenses:
+        print("No expenses to report.")
+        return
+    df = pd.DataFrame(expenses)
+    df["date"] = pd.to_datetime(df["date"])
+    print("Category Totals:")
+    print(reports.category_totals(df))
+    print("\nMonthly Totals:")
+    print(reports.monthly_totals(df))
+    print("\nBiggest Expense:")
+    print(reports.biggest_expense(df))
+
 
 # Main program
 def main():
@@ -99,7 +127,10 @@ def main():
         elif choice == "4":
             save_expenses(expenses, "expenses.csv")
             break
+        elif choice == "5":
+            show_reports(expenses)
         else:
-            print("Please choose 1-4")
+            print("Please choose 1-5")
+
 
 main()
